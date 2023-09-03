@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>게시글 상세 화면</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+	<div class="container">
+	<h2>게시글 상세 화면</h2>
+	<form action="/board/update" id="frm" method="get">
+	    <table class="board_detail">
+			<colgroup>
+				<col width="15%"/>
+				<col width="35%"/>
+				<col width="15%"/>
+				<col width="35%"/>
+			</colgroup>
+			<caption>게시글 상세내용</caption>
+			<tbody>
+				<tr>
+					<th scope="row">글 번호</th>
+					<td th:text="${boardUpdate.boardId }"></td>
+					<th scope="row">조회수</th>
+					<td th:text="${boardUpdate.boardHits }"></td>
+				</tr>
+				<tr>
+					<th scope="row">작성일</th>
+					<td th:text="*{#temporals.format(boardUpdate.boardCreatedTime, 'yyyy-dd HH:mm')}"></td>
+				</tr>
+				<tr>
+					<th scope="row">제목</th>
+					<td colspan="3"><input type="text" id="boardTitle" name="boardTitle" th:value="${boardUpdate.boardTitle }"/></td>
+					
+				</tr>
+				<tr>
+					<td colspan="4" class="view_text" >
+						<textarea title="내용" id="boardContents" name="boardContents" th:text="${boardUpdate.boardContents }"></textarea>
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+		<input type="hidden" name="boardId" th:value="${boardUpdate.boardId}">
+		<input type="hidden" name="boardHits" th:value="${boardUpdate.boardHits}">
+		<input type="hidden" name="deleted" th:value="${boardUpdate.deleted}">
+		<input class="btn" type="submit" value="저장하기" onclick="boardUpdate()">
+	</form>
+	
+	<script th:inline="javascript">
+		const boardUpdate = () => {
+        	console.log("수정 요청");
+        	document.getElementById('frm').submit();
+        	return false;
+    	}
+	</script>
+	</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>게시글 상세 화면</title>
+<link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+	<div class="container">
+	<h2>게시글 상세 화면</h2>
+	<form id="frm" method="post">
+	    <table class="board_detail">
+			<colgroup>
+				<col width="15%"/>
+				<col width="35%"/>
+				<col width="15%"/>
+				<col width="35%"/>
+			</colgroup>
+			<caption>게시글 상세내용</caption>
+			<tbody>
+				<tr>
+					<th scope="row">글 번호</th>
+					<td th:text="${boardDetail.boardId }"></td>
+					<th scope="row">조회수</th>
+					<td th:text="${boardDetail.boardHits }"></td>
+					
+				</tr>
+				<tr>
+					<th scope="row">작성자</th>
+					<td></td>
+					<th scope="row">작성일</th>
+					<td th:text="*{#temporals.format(boardDetail.boardCreatedTime, 'yyyy-dd HH:mm')}"></td>
+				</tr>
+				<tr>
+					<th scope="row">제목</th>
+					<td colspan="3" th:text="${boardDetail.boardTitle }"></td>
+				</tr>
+				<tr>
+					<td colspan="4" class="view_text" th:text="${boardDetail.boardContents }"></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+	<button class="btn" onclick="listReq()" id="list">목록으로</button>
+	<button class="btn" onclick="updateReq()" id="list">수정하기</button>
+	<button class="btn" onclick="deleteReq()" id="list">삭제하기</button>
+	<script th:inline="javascript">
+	const listReq = () => {
+        console.log("목록 요청");
+        location.href = "/";
+    }
+	const updateReq = () => {
+		console.log("수정 화면");
+		const id = "[[${boardDetail.boardId}]]"
+		location.href = "/update/" + id;
+	}
+	const deleteReq = () => {
+		console.log("삭제 요청");
+		const id = "[[${boardDetail.boardId}]]"
+	    location.href = "/delete/" + id;
+	}
+	</script>
+	</div>
+</body>
+</html>

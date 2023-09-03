@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>board</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <div class="container">
+    	<h2>게시글 목록</h2>
+    	<table class="board_list">
+	        <colgroup>
+	            <col width="15%"/>
+	            <col width="*"/>
+	            <col width="15%"/>
+	            <col width="20%"/>
+	        </colgroup>
+	        <thead>
+	            <tr>
+	                <th scope="col">글번호</th>
+	                <th scope="col">제목</th>
+	                <th scope="col">조회수</th>
+	                <th scope="col">작성일</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	        	<tr th:each="boardList : ${boardList}">
+	        		<td th:text="${boardList.boardId}"></td>
+	        		<td class="boardTitle"><a th:href="@{|/board/detail/${boardList.boardId}|}" th:text="${boardList.boardTitle}"></a></td>
+	        		<td th:text="${boardList.boardHits}"></td>
+	        		<td th:text="*{#temporals.format(boardList.boardCreatedTime, 'yyyy-dd HH:mm')}"></td>
+	        		
+	        	</tr> 
+	        </tbody>
+	    </table>
+	    <div style="text-align: center;">
+	    	<!-- 첫번째 페이지로 이동 -->
+			<!-- /board/paging?page=1 -->
+			<a class="btn" th:href="@{/(page=1)}">첫 페이지</a>
+			<!-- 이전 링크 활성화 비활성화 -->
+			<!-- boardList.getNumber() 사용자:2페이지 getNumber()=1 -->
+			<a th:href="${boardList.first} ? '#' : @{/(page=${boardList.number})}">[앞으로]</a>
+
+			<!-- 페이지 번호 링크(현재 페이지는 숫자만)
+        			for(int page=startPage; page<=endPage; page++)-->
+			<span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+			<!-- 현재페이지는 링크 없이 숫자만 -->
+    			<span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
+			<!-- 현재페이지 번호가 아닌 다른 페이지번호에는 링크를 보여줌 -->
+    			<span th:unless="${page == boardList.number + 1}">
+        			<a th:href="@{/(page=${page})}" th:text="${page}"></a>
+    			</span>
+			</span>
+
+			<!-- 다음 링크 활성화 비활성화
+    			사용자: 2페이지, getNumber: 1, 3페이지-->
+			<a th:href="${boardList.last} ? '#' : @{/(page=${boardList.number + 2})}">[뒤로]</a>
+			<!-- 마지막 페이지로 이동 -->
+			<a class="btn" th:href="@{/(page=${boardList.totalPages})}">마지막 페이지</a>
+	    </div>
+		<div>
+			<a href="/board/save" class="btn">글 쓰기</a>
+		</div>
+		
+    </div>
+</body>
+</html>
